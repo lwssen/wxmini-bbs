@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "发表文章",
+  "disableScroll": false,
+  "usingComponents": {
+    "van-nav-bar": "@vant/weapp/nav-bar/index",
+  "van-field": "@vant/weapp/field/index",
+  "tabbar": "../../components/tabbar/tabbar",
+  "van-sticky": "@vant/weapp/sticky/index"
+  }
+}

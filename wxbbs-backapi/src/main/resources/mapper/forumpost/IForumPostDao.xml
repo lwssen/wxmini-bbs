@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sss.sssforum.wxclient.post.dao.IForumPostDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sss.sssforum.wxclient.post.entity.ForumPost">
+        <id column="id" property="id" />
+        <result column="types_id" property="typesId" />
+        <result column="digest" property="digest" />
+        <result column="title" property="title" />
+        <result column="post_cotent" property="postCotent" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="comment_count" property="commentCount" />
+        <result column="view_count" property="viewCount" />
+        <result column="like_count" property="likeCount" />
+        <result column="order_number" property="orderNumber" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+    <resultMap id="PostResultMap" type="com.sss.sssforum.wxclient.dto.PostDTO" extends="BaseResultMap">
+        <result column="typeName" property="typeName" />
+        <association property="wxUser" javaType="com.sss.sssforum.wxclient.user.entity.WxUser">
+            <id column="userId" property="id" />
+            <result column="wx_nickname" property="wxNickname" />
+            <result column="open_id" property="openId" />
+            <result column="avatar_url" property="avatarUrl" />
+        </association>
+    </resultMap>
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        fp.id, fp.types_id, fp.digest, fp.title, fp.post_cotent, fp.create_user_id, fp.comment_count,fp.is_deleted,fp.order_number,
+        fp.view_count, fp.like_count, fp.create_time, fp.update_time
+    </sql>
+    <select id="getPostList" resultMap="PostResultMap">
+      select
+        fp.id, fp.types_id,fp.title, fp.create_user_id, fp.comment_count,fp.is_deleted,fp.order_number,
+        fp.view_count, fp.like_count, fp.create_time, fp.update_time
+        , wu.id as userId,wu.wx_nickname,wu.open_id,wu.avatar_url,
+        pt.type_name as typeName
+        from  forum_post fp
+        left join wx_user wu on  wu.id=fp.create_user_id
+        left join post_type pt on  fp.types_id=pt.type_id
+        <where>
+            <if test="forumPost.isDeleted">
+                and fp.is_deleted=0
+            </if>
+            <if test="forumPost !=null and forumPost.typesId !=null and forumPost.typesId > 0">
+                and   fp.types_id=#{forumPost.typesId}
+            </if>
+            <if test="forumPost !=null and forumPost.createUserId !=null">
+                and  fp.create_user_id=#{forumPost.createUserId}
+            </if>
+            <if test=" forumPost.title !=null and forumPost.title != ''">
+                and  fp.title like concat('%',#{forumPost.title},'%')
+            </if>
+        </where>
+
+    </select>
+
+    <update id="updatePostStatus">
+        UPDATE forum_post  set  is_deleted=#{isDeleted} WHERE id=#{postId}
+    </update>
+    <update id="updatePost" parameterType="com.sss.sssforum.wxclient.dto.PostTypeDTO">
+        UPDATE forum_post
+        <set>
+            <if test="postTypeDTO.isDeleted != null">
+                is_deleted=#{postTypeDTO.isDeleted},
+            </if>
+            <if test="postTypeDTO.typesId != null">
+                types_id=#{postTypeDTO.typesId},
+            </if>
+        </set>
+           WHERE id=#{postTypeDTO.postId}
+    </update>
+</mapper>

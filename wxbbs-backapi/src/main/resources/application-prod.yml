@@ -1,0 +1,82 @@
+server:
+  port: 9080
+  servlet:
+    context-path: /backapi
+
+spring:
+  profiles:
+    include: wechat-prod,file-config,mail
+  datasource:
+      druid:
+          driverClassName: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://127.0.0.1:3306/sss-forum-prod?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullNamePatternMatchesAll=true&useSSL=false
+          username: root
+          password: root
+          #配置监控统计拦截的filters，去掉后监控界面SQL无法进行统计，’wall’用于防火墙
+          filters: config,stat,wall,slf4j
+        #Druid监控拦截器
+        #是否开启SQL监控
+          filter:
+            stat:
+              enabled: true
+        #若进行单元测试，先暂时关闭拦截器
+          web-stat-filter:
+              enabled: true
+              url-pattern: /*
+            # 忽略过滤格式
+              exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+          stat-view-servlet:
+            #Druid监控页面配置
+            enabled: true
+            #是否允许重置数据
+            reset-enable: false
+            url-pattern: /druid/*
+            login-username: root
+            login-password: root123456
+            # 添加IP白名单
+            allow: 127.0.0.1
+            # 添加IP黑名单，当白名单和黑名单重复时，黑名单优先级更高
+#            deny:
+           #初始化大小
+          initial-size: 1
+          #最大连接数
+          max-active: 100
+         #最小连接数
+          min-idle: 1
+          max-wait: 60000
+          #间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+          time-between-eviction-runs-millis: 60000
+          #一个连接在池中最小生存的时间，单位是毫秒
+          min-evictable-idle-time-millis: 300000
+          #检查池中的连接是否仍可用的 SQL 语句,drui会连接到数据库执行该SQL, 如果正常返回，则表示连接可用，否则表示连接不可用
+          validation-query: SELECT 1
+          validation-query-timeout: 10000
+          #当程序请求连接，池在分配连接时，是否先检查该连接是否有效。(高效)
+
+#redis配置
+  redis:
+    database: 2
+    host: 127.0.0.1
+    port: 6579
+    password: sss123..
+    timeout: 50000ms
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: 5000ms
+
+#日志配置
+logging:
+  level:
+    com.sss.sssforum: info
+    root: info
+    org:
+      springframework:
+        web:  info
+      hibernate: info
+
+
+
+

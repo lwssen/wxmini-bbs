@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sss.sssforum.wxclient.user.dao.IWxUserDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sss.sssforum.wxclient.user.entity.WxUser">
+        <id column="id" property="id" />
+        <result column="wx_nickname" property="wxNickname" />
+        <result column="open_id" property="openId" />
+        <result column="role_id" property="roleId" />
+        <result column="avatar_url" property="avatarUrl" />
+        <result column="subscribe" property="subscribe" />
+        <result column="address" property="address" />
+        <result column="state" property="state" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="is_push" property="isPush" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+    <!--<resultMap id="userDTOResultMap" type="com.sss.sssforum.wxclient.dto.UserDTO" extends="BaseResultMap">
+
+    </resultMap>-->
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, wx_nickname,role_id, open_id, avatar_url, subscribe, address, state,is_push, is_deleted, create_time, update_time
+    </sql>
+
+    <select id="getAllUserList" resultMap="BaseResultMap">
+    SELECT
+	wu.*,
+	temp.*
+    FROM
+	wx_user wu
+	LEFT JOIN (
+	SELECT count( 0 ) AS postTotalCount,SUM( like_count ) AS likeTotalCount, create_user_id FROM forum_post GROUP BY create_user_id
+	) temp
+	ON temp.create_user_id = wu.id
+	<where>
+        <if test="userName !=null and userName !=''">
+            wu.wx_nickname LIKE CONCAT('%',#{userName},'%')
+        </if>
+    </where>
+    </select>
+</mapper>

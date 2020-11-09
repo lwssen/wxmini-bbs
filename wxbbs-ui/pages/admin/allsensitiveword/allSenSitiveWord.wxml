@@ -1,0 +1,49 @@
+<view style="padding-bottom:100rpx">
+		<view >
+		<van-row >
+				<van-col span="12" offset="1" style="font-size:30rpx;font-weight: bold;">敏感词名称</van-col>
+			</van-row>
+		</view>
+		<view wx:if="{{sensitiveWordList.length == 0}}" style="margin-top: 300rpx">
+		        <image class="head-img" style="width: 64px; height: 64px;" mode="scaleToFill" src="/myicons/emptyData.png"></image>
+						<text class="head-img" style="color: #cdcdcd;">没有任何数据哦</text>
+	</view>
+	<view wx:if="{{sensitiveWordList.length > 0}}" wx:for="{{sensitiveWordList}}" wx:key="index"  style="margin: 15px 0;border-bottom: 1px #ccc solid;">
+		<view>
+			<van-row >
+				<van-col span="24" offset="1" style="color: blue">{{item.sensitiveWord}}</van-col>
+			</van-row>
+			<van-row >
+				
+				<van-col span="4" offset="1" round class="bottom-style" >
+					<van-button type="info" size="mini" round  bind:click="showChange" data-index="{{index}}">修改</van-button>
+				</van-col>
+				<van-col span="4" offset="1" class="bottom-style">
+					<van-button type="danger" size="mini" round bind:click="delType" data-index="{{index}}">删除</van-button>
+				</van-col>
+			</van-row>
+		</view>	
+	</view>
+	<view>
+		<van-popup use-button-slot show="{{show}}" round position="bottom" custom-style=" height: 10%; "  bind:close="onClose" 
+		overlay-style="{backgroundColor:'rgba(0,0,0,0.1)'}" close-on-click-overlay >
+			<van-field  value="{{changeValue}}"  input-class="fobotom2" bind:change="getChangeValue"
+			autosize type="text" placeholder="请输入新的类型名称" border clearable>
+				<van-button slot="button" size="small" type="primary" bind:click="change">修改</van-button>
+			</van-field>
+		</van-popup>
+		<van-popup show="{{addShow}}" round position="bottom" custom-style="height: 10%;"  bind:close="onClose" custom-class="fobotom2"
+		use-button-slot overlay-style="{backgroundColor:'rgba(0,0,0,0.1)'}" 
+		 close-on-click-overlay  >
+			<van-field  value="{{changeValue}}" autosize type="text" placeholder="请输入新的类型名称" border="{{true}}" bind:change="getChangeValue"
+			clearable  >
+								<van-button slot="button" size="small" type="primary" bind:click="add">添加</van-button>
+						</van-field>
+		</van-popup>
+	</view>
+	<view>
+		<van-button type="primary" round class="fobotom" bind:click="showAdd" >添加</van-button>
+	</view>
+		
+
+</view>

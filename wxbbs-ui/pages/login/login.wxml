@@ -1,0 +1,14 @@
+<view>
+	<view class="head-img-box">
+		<van-image round width="5rem" height="5rem" class="head-img" src="{{userInfo.avatarUrl}}">
+		</van-image>
+	</view>
+	<view>
+		<van-button  custom-class="label-style2" 
+    type="primary" size="large" 
+    open-type="getUserInfo" 
+    bind:getuserinfo="getUserInfo">
+    点击登录
+    </van-button>
+	</view>
+</view>

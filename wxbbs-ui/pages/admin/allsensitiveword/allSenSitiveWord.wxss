@@ -1,0 +1,17 @@
+/* pages/admin/allsensitiveword/allSenSitiveWord.wxss */
+.fobotom {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.fobotom2 {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+ 
+}

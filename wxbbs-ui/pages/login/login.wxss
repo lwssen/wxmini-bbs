@@ -1,0 +1,17 @@
+.head-img{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+.label-style2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row{
+  align-content: center;
+  padding-left: 260rpx;
+  
+}

@@ -1,0 +1,64 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/index/index",
+    "pages/reward/reward",
+    "pages/logs/logs",
+    "pages/message/message",
+    "pages/my/my",
+    "pages/editor/editor",
+    "pages/my/userInfo/userInfo",
+    "pages/my/mypost/mypost",
+    "pages/admin/allposts/allposts",
+    "pages/admin/allpostype/allPostType",
+    "pages/admin/allusers/allUsers",
+    "pages/admin/allsensitiveword/allSenSitiveWord",
+    "pages/postinfo/postInfo",
+    "pages/admin/allpostcomments/allPostComments",
+    "pages/login/login"
+  ],
+  "usingComponents": {
+    "van-toast": "@vant/weapp/toast/index"
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#A9E2F3",
+    "navigationBarTitleText": "Weixin",
+    "navigationBarTextStyle": "black"
+  },
+  "ZHISHItabBar": {
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/home/home",
+        "iconPath": "./myicons/shouye_1.png",
+        "selectedIconPath": "./myicons/shouye.png"
+      },
+      {
+        "text": "发布",
+        "pagePath": "pages/push/pushPost",
+        "iconPath": "./myicons/fabu1.png",
+        "selectedIconPath": "./myicons/fabu.png"
+      },
+      {
+        "text": "打赏",
+        "pagePath": "pages/reward/reward",
+        "iconPath": "./myicons/dashang1.png",
+        "selectedIconPath": "./myicons/dashang.png"
+      },
+      {
+        "text": "消息",
+        "pagePath": "pages/message/message",
+        "iconPath": "./myicons/xiaoxi1.png",
+        "selectedIconPath": "./myicons/xiaoxi.png"
+      },
+      {
+        "text": "我的",
+        "pagePath": "pages/my/my",
+        "iconPath": "./myicons/wode1.png",
+        "selectedIconPath": "./myicons/wode.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

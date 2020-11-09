@@ -1,0 +1,32 @@
+#微信公众号配置
+wechat:
+  appId: wx66666666a
+  appSecret: fe8888380026
+  token: pppp123456
+  state: http://www.test.cc
+ #获得用户信息的回调地址
+  redireUrl: http://test.natapp1.cc
+  returnUrl: http://192.168.112.12/bbs/ #对应微信的 state 字段 用于后端重定向到前端页面
+
+jwt:
+  secret: sadsfsdhffggfjghj54646687867ytihjouilkjlufbvcmnbmn34131321x
+    # 有效期，单位分钟，默认1440分钟
+  expire-time-in-minute: 1440
+  refresh-expire-time-in-minute: 10080
+
+
+#微信小程序所需配置
+wx:
+  miniapp:
+    configs:
+      - appid: wx66666ed
+        secret: 9888888888856
+        token: 123456
+        aesKey: sdfgdfgfd44564dsfsdfsddf
+        # 消息格式，XML或者JSON
+        msgDataFormat: JSON
+
+
+#JWT过滤器放行路径
+myIgnore:
+  urls: /wechat,/css,/images,/wx/user,/wx/portal

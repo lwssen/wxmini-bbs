@@ -1,0 +1,149 @@
+server:
+  port: 9080
+  servlet:
+    context-path: /backapi
+
+spring:
+  profiles:
+    include: wechat-dev,mail
+#日期设置配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+  datasource:
+    druid:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/sss-forum?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullNamePatternMatchesAll=true&useSSL=false
+      username: root
+      password: root
+      #配置监控统计拦截的filters，去掉后监控界面SQL无法进行统计，’wall’用于防火墙
+      filters: config,stat,wall,slf4j
+      #Druid监控拦截器
+      #是否开启SQL监控
+      filter:
+        stat:
+          enabled: true
+      #若进行单元测试，先暂时关闭拦截器
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        # 忽略过滤格式
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+      stat-view-servlet:
+        #Druid监控页面配置
+        enabled: true
+        #是否允许重置数据
+        reset-enable: false
+        url-pattern: /druid/*
+        login-username: root
+        login-password: root123456
+        # 添加IP白名单
+        allow: 127.0.0.1
+        # 添加IP黑名单，当白名单和黑名单重复时，黑名单优先级更高
+        #             deny:
+        #初始化大小
+      initial-size: 1
+      #最大连接数
+      max-active: 100
+      #最小连接数
+      min-idle: 1
+      max-wait: 60000
+      #间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      time-between-eviction-runs-millis: 60000
+      #一个连接在池中最小生存的时间，单位是毫秒
+      min-evictable-idle-time-millis: 300000
+      #检查池中的连接是否仍可用的 SQL 语句,drui会连接到数据库执行该SQL, 如果正常返回，则表示连接可用，否则表示连接不可用
+      validation-query: SELECT 1
+      validation-query-timeout: 10000
+      #当程序请求连接，池在分配连接时，是否先检查该连接是否有效。(高效)
+
+
+  redis:
+    database: 1
+    host: localhost
+    port: 6379
+#    password: 123456
+    timeout: 10000ms
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: 5000ms
+
+
+
+  #设置上传文件的大小
+  servlet:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+
+
+#上传文件配置
+file:
+  config:
+    #服务器IP地址
+    server-address: http://192.168.2.192:${server.port}${server.servlet.context-path}
+    #配置 https 访问文件的路径
+    release-path: /images/**
+    #ip地址+/images/文件名称 访问的URL
+    request-path: /images/
+    #上传文件的保存路径
+    windows-save-path: F://Images//
+    linux-save-path: /images/
+    #允许上传文件的大小,单位兆(M)
+    file-size: 10240
+    file-support-type: png,jpg,jpeg
+    #window系统下 文件所存在的实际路径
+    windows-path: file:F://Images//
+    #linux系统下 文件所存在的实际路径
+    linux-path: /images/
+
+oss:
+#  AccessKeyID: LTAI4GDejFfS2U2sNSy7erCS
+#  AccessKeySecret: 4M55GziYvf8m0FsqvR5pomePe5BmIk
+  AccessKeyID: LTAI4GFk6BLDeszo684PH2B9
+  AccessKeySecret: mC7TcHyQEZ1CvEf6qOQ9Ikuz0RRu7i
+  endpoint: oss-accelerate.aliyuncs.com
+  bucketName: photos-2020-09-12
+  requestUrl: sss.sssen.top
+  savePath: images
+  filePath: /images/
+
+#日志配置
+logging:
+  level:
+    com.sss.sssforum: debug
+    root: info
+    org:
+      springframework:
+        web:  info
+      hibernate: info
+
+#mybatis-plus配置
+mybatis-plus:
+#  xml文件扫描路径
+  mapper-locations: classpath*:/mapper/**/*.xml
+  global-config:
+    db-config:
+      logic-delete-field: isDeleted  # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+      table-underline: true
+    banner: false
+  configuration:
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+
+#JWT过滤器放行路径
+myIgnore:
+  urls: /wechat,/wechat/api,/css,/static/css,/images,/wx/user,/wx/portal

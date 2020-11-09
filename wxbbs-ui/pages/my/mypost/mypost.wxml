@@ -1,0 +1,50 @@
+<view>
+	<van-search value="{{searchValue}}" shape="round" placeholder="请输入帖子标题搜索" bind:search="onSearch" bind:clear="onClear" />
+	<view style="overflow: auto;width: 100%;">
+			<view wx:if="{{postList.length == 0}}" style="margin-top: 300rpx">
+		        <image class="head-img" style="width: 64px; height: 64px;" mode="scaleToFill" src="/myicons/emptyData.png"></image>
+						<text class="head-img" style="color: #cdcdcd;">没有任何数据哦</text>
+	</view>
+		<view wx:if="{{postList.length > 0}}" wx:for="{{postList}}" wx:key="index" title="{{item.title}}" style="margin: 15px 0;border-bottom: 1px #ccc solid;">
+			<view>
+				<van-row >
+					<van-col span="3" offset="1">
+						<van-image round width="2rem" height="2rem" src="{{item.wxUser.avatarUrl}}">
+						</van-image>
+					</van-col>
+					<text class="label-style">{{item.wxUser.wxNickname}} | {{item.createTime}}</text>
+				 </van-row> 
+			</view>
+
+			<view >
+			<navigator url="/pages/postinfo/postInfo?postId={{item.id}}">
+					<van-cell title="{{item.title}}" center title-class="title-style2" />
+			</navigator>
+			</view>
+
+			<view>
+				<van-row  class="bottom-style" align>
+					<van-col span="3" offset="1">
+						<van-icon name="eye-o" size="20px" />
+						<text>{{item.viewCount}}</text></van-col>
+					<van-col span="3" offset="1" bind:click="btn">
+						<van-icon name="chat-o" size="20px" />
+						<text>{{item.commentCount}}</text></van-col>
+					<van-col span="3" offset="1">
+						<van-icon name="good-job-o" size="20px" />
+						<text>{{item.likeCount}}</text></van-col>
+				</van-row>
+				<van-row>
+					<van-col offset="15" span="12">
+						<van-button type="danger" size="mini" round style="border-radius: 80px" bind:click="delClick" data-postId="{{item.id}}">
+							删除
+						</van-button>
+					</van-col>
+				</van-row>
+
+			</view>
+		</view>
+    </view>
+
+
+	</view>

@@ -1,0 +1,55 @@
+<!--pages/reward/reward.wxml-->
+<view>
+       <view class="title">
+            <text class="text-style">请开发作者喝杯奶茶吧(*^_^*)</text>
+        </view>
+        <view class="btn">
+            <van-button wx:if="{{wxPay}}" type="info" round bind:click="shoWpay"  style="align-content: center">点击切换支付宝图片</van-button>
+            <van-button wx:else="{{aliPay}}" type="primary" round bind:click="shoWpay" style="align-content: center">点击切换微信图片</van-button>
+        </view>
+        <view class="small-image-header">
+            <van-image
+                    width="5rem"
+                    height="5rem"
+                    fit="widthFix"
+                    src="/pages/reward/images/01.jpg"
+            />
+            <van-image
+                    width="5rem"
+                    height="5rem"
+                    fit="fill"
+                    src="/pages/reward/images/02.jpg"
+            />
+            <van-image
+                    width="5rem"
+                    height="5rem"
+                    fit="fill"
+                    src="/pages/reward/images/01.jpg"
+            />
+        </view>
+        <view  >
+            <van-image wx:if="{{wxPay}}" width="250px" height="250px" class="image" src="/pages/reward/images/wxxx.jpg" />
+            <van-image wx:else="{{aliPay}}" width="250px" height="250px" class="image"  src="/pages/reward/images/alili2.jpg" />
+        </view>
+        <view class="small-image-foot">
+            <van-image
+                    width="5rem"
+                    height="5rem"
+                    fit="widthFix"
+                    src="/pages/reward/images/01.jpg"
+            />
+            <van-image
+                    width="5rem"
+                    height="5rem"
+                    fit="fill"
+                    src="/pages/reward/images/02.jpg"
+            />
+            <van-image
+                    width="5rem"
+                    height="5rem"
+                    fit="fill"
+                    src="/pages/reward/images/01.jpg"
+            />
+        </view>
+      <tabbar tabActive="{{active}}" messageCount="{{messageCount}}" binditemChange="handlerChange"> </tabbar> 
+</view>

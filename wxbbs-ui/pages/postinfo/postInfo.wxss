@@ -1,0 +1,125 @@
+.image-style {
+  flex: 2;
+  display: flex;
+  margin-left: 10rpx;
+}
+
+.right {
+  flex: 100;
+  display: block;
+}
+
+.counts {
+  margin-top: 12rpx;
+  margin-left: 20rpx;
+}
+
+.username-style {
+  display: flex;
+  margin-left: 10rpx;
+  margin-top: -10rpx;
+}
+
+.van-col > span {
+  margin-left: 5rpx;
+}
+
+.footer {
+  display: flex;
+}
+
+.label-style {
+  margin-left: 20rpx;
+  margin-top: 0rpx;
+  
+}
+
+.comment-style {
+  margin-top: 1rpx;
+  color: #070707;
+  padding-left: 15rpx;
+  margin-bottom: 0;
+}
+
+.content {
+  margin: 15rpx 0;
+  border-bottom: 1rpx #ccc solid;
+  border-top: 1rpx #ccc solid;
+}
+
+.van-overlay2 {
+  background-color: rgba(0, 0, 0, 0.02) !important;
+}
+
+.show-many-comment {
+  margin-top: -15rpx;
+  margin-left: 15rpx;
+  font-size: 12rpx;
+  color: #858990;
+  line-height: 18rpx;
+  /* padding: 1rpx 1rpx 1rpx 10rpx;*/
+}
+
+.van-popup__close-icon--top-left {
+  top: 5rpx;
+  left: 150rpx;
+}
+
+.van-popup__close-icon {
+  color: #e60000;
+}
+
+.close {
+  margin-left: 350rpx;
+  border: 4rpx solid #000;
+  border-radius: 50%;
+  font-size: 40rpx;
+}
+
+.van-col-style {
+  display: flex;
+  align-items: center;
+}
+.text-style{
+    margin-left: 5rpx;
+}
+
+.van-row--flex::after {
+  display: none;
+  
+}
+
+
+.van-row::after {
+  display: table;
+  clear: both;
+  content: '';
+}
+
+.van-field{
+  position:'fixed';
+  bottom:'0';
+  left:'0';
+  width:'100%';
+  z-index:99;
+}
+
+.fobotom {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-Index:99;
+}
+.icon-style{
+  padding-left: 100rpx;
+  
+}
+.dianzan{
+  display: flex;
+  align-items: center;
+
+}
+.title{
+  margin-top: 10px;
+}

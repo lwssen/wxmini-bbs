@@ -1,0 +1,81 @@
+<view>
+	<view>
+		<view>
+			<van-sticky>
+				<!--顶部菜单栏-->
+				<van-tabs bind:click="onChange" active="{{active}}">
+					<van-tab title="消息" name="1" info="{{messages.messageCount >0 ?messages.messageCount:''}}" />
+					<van-tab title="点赞" name="3" info="{{messages.likeCount >0 ?messages.likeCount:''}}" />
+					<van-tab title="通知" name="4" info="{{messages.notificationCount >0 ?messages.notificationCount:''}}" />
+				</van-tabs>
+			</van-sticky>
+		</view>
+
+    <view wx:if="{{messageList.length == 0 }}" style="margin-top: 300rpx">
+		        <image class="head-img" style="width: 64px; height: 64px;" mode="scaleToFill" src="/myicons/emptyData.png"></image>
+						<text class="head-img" style="color: #cdcdcd;">没有任何数据哦</text>
+	</view>
+		<view wx:if="{{messageList.length > 0}}" wx:for="{{messageList}}" wx:key="idx" style="margin: 5px 0;border-bottom: 1px #ccc solid;">
+			<view>
+				<van-row type="flex">
+					<van-col span="3" offset="1">
+						<van-image round width="2rem" height="2rem" 
+						src="{{item.wxUser.avatarUrl==null?'https://photos-2020-09-12.oss-accelerate.aliyuncs.com/images/13047049687160012801599929679445.jpg':item.wxUser.avatarUrl}}">
+						</van-image>
+					</van-col>
+					<text class="label-style" wx:if="item.wxUser !=null">{{item.wxUser.wxNickname==null?'系统管理员':item.wxUser.wxNickname}} | {{item.createTime}}</text>
+				</van-row>
+			</view>
+			<view>
+				<view class="span-style">
+					<text bindtap="jumpPostInfo" data-post="{{item}}">{{item.commentContent}}</text>
+				</view>
+				<view class="label-cell" bindtap="jumpPostInfo" data-post="{{item}}">
+					<text >{{item.messageContent}}</text>
+				</view>
+
+
+				<view hidden="{{messageType != 1}}">
+					<van-row style="margin-top: -5px;margin-bottom: -5px">
+						<van-col class="label-cell" style="color: #43474e" offset="18" span="5">
+							<p bindtap="showCommentField" data-wxuser="{{item}}">
+								<van-icon name="comment-o" /> 回复 </p>
+						</van-col>
+					</van-row>
+				</view>
+			</view>
+		</view>
+			<!--占用空白位置-->
+        <view style="height: 110rpx;width: 100%"></view>
+        
+    <view>
+					<van-popup show="{{showComment}}" round position="bottom" close-on-click-overlay="true" z-index="99" bind:close="onClose" custom-style=" height: 15%; z-index:100"  closeable overlay="{{true}}" custom-class="van-overlay">
+						<view class="fobotom">
+							
+							<van-field
+                                    value="{{ replyContent }}"
+                                    autosize
+                                    type="text"
+                                    fixed
+                                    placeholder="{{popupPlaceholder}}"
+                                    border="{{false}}"
+                                    clearable="{{true}}"
+                                    input-class="fobotom"
+                                    bind:change="contentValue"
+                                    use-button-slot >
+                                <van-button slot="button" size="small" type="primary" bind:click="pushReplyComment">
+                                 回复
+                                </van-button>
+                            </van-field>
+
+						</view>
+					</van-popup>
+				</view>
+		<!-- messageCount="{{messageCount}}" -->
+		<tabbar tabActive="{{tabBarActive}}" />
+	</view>
+
+
+
+
+</view>

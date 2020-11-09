@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sss.sssforum.wxclient.message.dao.IUserMessageDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sss.sssforum.wxclient.message.entity.UserMessage">
+        <id column="id" property="id" />
+        <result column="post_comment_id" property="postCommentId" />
+        <result column="user_id" property="userId" />
+        <result column="post_id" property="postId" />
+        <result column="like_comment_user_id" property="likeCommentUserId" />
+        <result column="message_type" property="messageType" />
+        <result column="has_read" property="hasRead" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+
+    </resultMap>
+        <resultMap id="userMessageBase" type="com.sss.sssforum.wxclient.dto.UserMessageDTO" extends="BaseResultMap">
+        <result column="title" property="title" />
+        <result column="commentContent" property="commentContent" />
+        <result column="otherCommentContent" property="otherCommentContent" />
+        <result column="parentId" property="parentId" />
+        <association property="wxUser" javaType="com.sss.sssforum.wxclient.user.entity.WxUser">
+            <id column="wxuserId" property="id" />
+            <result column="wx_nickname" property="wxNickname" />
+            <result column="open_id" property="openId" />
+            <result column="role_id" property="roleId" />
+            <result column="avatar_url" property="avatarUrl" />
+            <result column="subscribe" property="subscribe" />
+            <result column="address" property="address" />
+        </association>
+        <!--<association property="postComment" javaType="com.sss.sssforum.wxclient.post.entity.PostComment">
+            <id column="postCommentId" property="id" />
+            <result column="comment_content" property="commentContent" />
+        </association>-->
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, post_comment_id, user_id, post_id,like_comment_user_id, message_type, has_read, is_deleted, create_time, update_time
+    </sql>
+
+    <select id="getMyMessageCount" resultType="integer">
+        SELECT
+        COUNT( 0 )
+        FROM
+        user_message um
+        LEFT JOIN post_comment pc ON pc.id=um.post_comment_id
+        WHERE
+        um.is_deleted = 0
+        AND um.has_read = 0
+        AND um.user_id = #{userId}
+        <if test="messageType !=null">
+            <choose>
+                <when test="messageType==1">
+                    AND um.message_type in(1,2)
+                </when>
+                <otherwise>
+                    AND um.message_type=#{messageType}
+                </otherwise>
+            </choose>
+        </if>
+
+    </select>
+
+    <select id="getUserMessageList" resultMap="userMessageBase">
+        SELECT
+	um.id,
+	um.message_type,um.create_time,
+    um.post_id,
+    um.post_comment_id,
+	fp.title,
+    pc.comment_content AS commentContent,
+    pc.parent_id as parentId,
+	wu.id AS wxuserId,
+	wu.wx_nickname,
+    wu.avatar_url
+    FROM
+	`user_message` um
+	LEFT JOIN forum_post fp ON fp.id=um.post_id
+	LEFT JOIN post_comment pc ON pc.id=um.post_comment_id
+	LEFT JOIN wx_user wu ON wu.id=pc.user_id
+	<where>
+        um.is_deleted=0
+      and um.user_id=#{userMessage.userId}
+        <if test="userMessage !=null and userMessage.messageType !=null">
+            <choose>
+              <when test="userMessage.messageType==1">
+                  and um.message_type in (1,2)
+              </when>
+                <when test="userMessage.messageType==3">
+                    and um.message_type=#{userMessage.messageType}
+                    and pc.comment_type=#{userMessage.messageType}
+                </when>
+              <otherwise>
+                  and um.message_type=#{userMessage.messageType}
+              </otherwise>
+            </choose>
+        </if>
+    </where>
+        order by um.create_time desc
+    </select>
+
+    <update id="updateUserMessageState" parameterType="com.sss.sssforum.wxclient.message.entity.UserMessage">
+        update user_message
+        <set>
+            is_deleted=#{userMessage.isDeleted},create_time=now(),
+            <if test="userMessage.hasRead !=null">
+              has_read=#{userMessage.hasRead}
+            </if>
+        </set>
+        where user_id=#{userMessage.userId} and message_type=3 and post_comment_id=#{userMessage.postCommentId}
+    </update>
+
+    <select id="myGetUserMessage" parameterType="com.sss.sssforum.wxclient.message.entity.UserMessage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM user_message
+        <where>
+            1=1
+            <if test="userId !=null">
+                and  user_id=#{userId}
+            </if>
+            <if test="postId !=null">
+                and  post_id=#{postId}
+            </if>
+            <if test="messageType !=null">
+                and  message_type=#{messageType}
+            </if>
+            <if test="likeCommentUserId !=null">
+                and  like_comment_user_id=#{likeCommentUserId}
+            </if>
+            <if test="postCommentId !=null">
+                and  post_comment_id=#{postCommentId}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,36 @@
+#设置上传文件的大小
+spring:
+    servlet:
+        multipart:
+            max-file-size: 1000MB
+            max-request-size: 1000MB
+
+#上传文件配置
+file:
+    config:
+        #服务器IP地址
+        server-address: https://www.test.top
+        #配置 https 访问文件的路径
+        release-path: /images/**
+        #ip地址+/images/文件名称 访问的URL
+        request-path: /images/
+        #上传文件的保存路径
+        windows-save-path: F://Images//
+        linux-save-path: /images/
+        #允许上传文件的大小,单位兆(M)
+        file-size: 10240
+        file-support-type: png,jpg,jpeg
+        #window系统下 文件所存在的实际路径
+        windows-path: file:F://Images//
+        #linux系统下 文件所存在的实际路径
+        linux-path: /images/
+
+#阿里云OSS配置
+oss:
+    AccessKeyID: 123456
+    AccessKeySecret: 123456
+    endpoint: 123456
+    bucketName: 123456
+    requestUrl: 123456
+    savePath: images
+    filePath: /images/

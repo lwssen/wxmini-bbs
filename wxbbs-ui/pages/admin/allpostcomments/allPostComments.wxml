@@ -1,0 +1,157 @@
+<view>
+	<!--展现帖子的评论列表 start-->
+	<view wx:if="{{allPostCommentList.length == 0}}" style="margin-top: 300rpx">
+		        <image class="head-img" style="width: 64px; height: 64px;" mode="scaleToFill" src="/myicons/emptyData.png"></image>
+						<text class="head-img" style="color: #cdcdcd;">没有任何数据哦</text>
+	</view>
+	<view id="commentList-start" wx:if="{{allPostCommentList.length > 0}}" wx:for="{{ allPostCommentList}}" wx:key="index">
+		<view class="footer">
+			<van-image round width="3rem" height="3rem" src="{{item.wxUser.avatarUrl}}" />
+			<view style="width: 100%;">
+				<view>
+					<van-cell title="{{item.wxUser.wxNickname}} " size="large" label="{{index+1}}楼-{{item.createTime}}" value-class="icon-style">
+						<view wx:if="{{!item.isLike}}" class="dianzan" slot="right-icon">
+							<van-icon name="good-job-o" size="20px" class="custom-icon" data-index="{{index}}" bindtap="likeComment" />
+							{{item.commentLikeCount > 0?item.commentLikeCount:''}}
+						</view>
+						<view wx:if="{{item.isLike}}" class="dianzan" slot="right-icon">
+							<van-icon name="good-job" size="20px" class="custom-icon" data-index="{{index}}" bindtap="likeComment" />
+							{{item.commentLikeCount}}
+						</view>
+					</van-cell>
+				</view>
+			</view>
+		</view>
+		<!-- 是否弹出回复他人的弹出框-->
+		<view>
+			<text class="comment-style" >{{item.commentContent}}</text>
+		</view>
+		<!-- 是否显示更多回复文字标签 "-->
+		<view>
+			<van-button wx:if="{{item.manyCommentCount > 0}}" round size="mini" style="padding:0 10px;margin: 0px 10px 10px;" type="default" data-index="{{index}}" bind:click="showChildManyComment">
+				{{item.manyCommentCount}}条回复
+			</van-button>
+		</view>
+		<!-- 按钮列表-->
+		<view>
+			<van-row>
+        <van-col span="8">
+						<van-button round color="#81DAF5" size="small" data-id="{{index}}" data-isMaster="{{true}}" bind:click="showShielding">
+							屏蔽
+						</van-button>
+					</van-col>
+				<van-col span="8">
+							<van-button round color="#F781F3" size="small" data-id="{{index}}" data-isMaster="{{true}}" bind:click="showSetTop">
+								置顶
+							</van-button>
+				</van-col>
+				<van-col span="8">
+					<picker bindchange="bindPickerChange" value="{{0}}" data-index="{{index}}" range="{{option2}}" range-key="text">
+						<view class="picker">
+							<van-button round color="#F78181" size="small">
+								{{item.isDeleted? '删除':'正常'}}
+							</van-button>
+						</view>
+					</picker>
+				</van-col>
+			</van-row>
+		</view>
+		<!-- 按钮列表 end-->
+	</view>
+	<!--展现帖子的评论列表 end-->
+	<!-- 更多回复start -->
+	<!--查看更多回复弹出框-->
+	<view>
+		<van-popup show="{{showChildContent}}" position="bottom" bind:close="onClose2" close-on-click-overlay="true" 
+		overlay-style="{backgroundColor:'rgba(0,0,0,0.1)'}">
+
+			<!--更多回复页面的回复数据列表 start-->
+			<view style="height: 100%;">
+				<!--查看更多回复页面顶部的关闭图标-->
+				<view>
+						<van-icon class="close" name="cross" size="15px" bind:click="onCloseManyComment" />
+				</view>
+				<view wx:if="{{childCommentList.length > 0}}" wx:for="{{childCommentList}}" wx:for-item="childItem" wx:for-index="childIdx" wx:key="childIdx">
+					<view class="footer">
+						<van-image round width="3rem" height="3rem" src="{{childItem.wxUser.avatarUrl}}" />
+						<view style="width: 100%;">
+							<view>
+								<van-cell title="{{childItem.wxUser.wxNickname}} " size="large" label="{{childItem.createTime}}" value-class="icon-style">
+									<view wx:if="{{!childItem.isLike}}" class="dianzan" slot="right-icon">
+										<van-icon slot="right-icon" name="good-job-o" size="20px" class="custom-icon" data-index="{{childIdx}}" bindtap="likeChildComment" />
+										{{childItem.commentLikeCount > 0?childItem.commentLikeCount:''}}
+									</view>
+									<view wx:if="{{childItem.isLike}}" class="dianzan" slot="right-icon">
+										<van-icon slot="right-icon" name="good-job" size="20px" class="custom-icon" data-index="{{childIdx}}" bindtap="likeChildComment" />
+										{{childItem.commentLikeCount}}
+									</view>
+								</van-cell>
+							</view>
+						</view>
+					</view>
+					<view>
+						<text class="post-comment-style" bindtap="childPopupComment" data-index="{{childIdx}}">{{childItem.commentContent}}</text>
+					</view>
+					<!-- 按钮列表-->
+					<view>
+            <van-col span="8">
+						<van-button round color="#81DAF5" size="small" data-id="{{childIdx}}" data-isMaster="{{false}}"  bind:click="showShielding">
+							屏蔽
+						</van-button>
+					</van-col>
+						<van-row>
+							<van-col span="8">
+										<van-button round color="#F781F3" size="small" data-id="{{childIdx}}" data-isMaster="{{false}}"  bind:click="showSetTop" >
+											置顶
+										</van-button>
+							</van-col>
+							<van-col span="8">
+								<picker bindchange="bindPickerChange2" value="{{0}}" data-index="{{childIdx}}" range="{{option2}}" range-key="text">
+									<view class="picker">
+										<van-button round type="danger" size="small">
+											{{childItem.isDeleted? '删除':'正常'}}
+										</van-button>
+									</view>
+								</picker>
+							</van-col>
+						</van-row>
+					</view>
+					<!-- 按钮列表 end-->
+				</view>
+			</view>
+			<!--更多回复页面的回复数据列表 end-->
+		</van-popup>
+	</view>
+	<!-- 更多回复end -->
+
+    <!--屏蔽内容输入框-->
+			<view >
+				<van-popup show="{{showShielding}}" round position="bottom" custom-style="height: 20%; z-index: 105" 
+        overlay-style="{backgroundColor:'rgba(0,0,0,0.1)'}" closeable 
+        bind:close="onClose" close-on-click-overlay="true">
+					<van-field custom-style="margin-top: 80rpx" bind:change="getChangeValue" 
+           autosize type="text" placeholder="请输入屏蔽文字说明" border="{{ false }}" clearable="true" use-button-slot>
+						<van-button size="small" color="#81DAF5" slot="button" 
+            bind:click="setContent">
+							屏蔽
+						</van-button>
+					</van-field>
+				</van-popup>
+			</view>
+      <!--置顶排序输入框-->
+			<view >
+				<van-popup show="{{showSetTop}}" round position="bottom" custom-style="height: 15%; z-index: 105"
+         overlay-style="{backgroundColor:'rgba(0,0,0,0.1)'}" closeable bind:close="onClose" close-on-click-overlay="true">
+					<van-field custom-style="margin-top: 25px" bind:change="getChangeValue" value="{{childPopupCommentContent}}" 
+          autosize  
+          type="digit" placeholder="请输入数字，数字越大显示在最前面" border="{{ false }}" clearable="true" use-button-slot>
+						<van-button size="small" color="#F781F3" 
+            slot="button" 
+            bind:click="setTopPush">
+							置顶
+						</van-button>
+					</van-field>
+				</van-popup>
+			</view>
+
+</view>

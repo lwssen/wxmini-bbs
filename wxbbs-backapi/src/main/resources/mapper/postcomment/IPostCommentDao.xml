@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sss.sssforum.wxclient.post.dao.IPostCommentDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sss.sssforum.wxclient.post.entity.PostComment">
+        <id column="id" property="id" />
+        <result column="post_id" property="postId" />
+        <result column="parent_id" property="parentId" />
+        <result column="comment_content" property="commentContent" />
+        <result column="old_comment_content" property="oldCommentContent" />
+        <result column="user_id" property="userId" />
+        <result column="comment_like_count" property="commentLikeCount" />
+        <result column="comment_type" property="commentType" />
+        <result column="order_number" property="orderNumber" />
+        <result column="is_deleted" property="isDeleted" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+    <resultMap id="DtoResultMap" type="com.sss.sssforum.wxclient.dto.PostCommentDTO" extends="BaseResultMap">
+        <association property="wxUser" javaType="com.sss.sssforum.wxclient.user.entity.WxUser">
+            <id column="userId" property="id" />
+            <result column="wx_nickname" property="wxNickname" />
+            <result column="open_id" property="openId" />
+            <result column="avatar_url" property="avatarUrl" />
+        </association>
+        <!--<collection property="childCommentList" ofType="com.sss.sssforum.wxclient.dto.PostCommentDTO">
+            <id column="childId" property="id" />
+            <result column="childPostId" property="postId" />
+            <result column="childParentId" property="parentId" />
+            <result column="childcCmmentContent" property="commentContent" />
+            <result column="childUserId" property="userId" />
+            <result column="childCommentLikeCount" property="commentLikeCount" />
+            <result column="childWxNickname" property="childWxNickname" />
+            <result column="childAvatarUrl" property="childAvatarUrl" />
+        </collection>-->
+    </resultMap>
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        pc.id, pc.post_id, pc.parent_id, pc.comment_content, pc.user_id, pc.comment_type,pc.comment_like_count,
+        pc.is_deleted, pc.create_time, pc.update_time,order_number,old_comment_content
+    </sql>
+
+    <select id="getPostCommentList" resultMap="DtoResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        ,wu.id as userId,wu.wx_nickname,wu.open_id,wu.avatar_url
+        from post_comment pc
+        LEFT JOIN wx_user wu ON wu.id = pc.user_id
+        <where>
+            1=1
+            and pc.comment_type=1
+            and pc.post_id=#{postId}
+            <if test="commentContent !=null and commentContent!='' ">
+                and pc.comment_content like concat('%',#{commentContent},'%')
+            </if>
+            <if test="parentId !=null  ">
+                and pc.parent_id = #{parentId}
+            </if>
+            <if test="!isDeleted">
+                and pc.is_deleted=0
+            </if>
+        </where>
+        order by pc.order_number desc, pc.create_time
+    </select>
+
+    <select id="myGetPostComment" parameterType="com.sss.sssforum.wxclient.post.entity.PostComment" resultMap="BaseResultMap">
+        SELECT id,post_id,parent_id,comment_content,user_id,comment_type,comment_like_count,is_deleted,create_time,update_time
+      FROM post_comment
+      <where>
+          <if test="id !=null">
+              and  id=#{id}
+          </if>
+          <if test="userId !=null">
+            and  user_id=#{userId}
+          </if>
+          <if test="postId !=null">
+            and  post_id=#{postId}
+          </if>
+          <if test="commentType !=null">
+              and  comment_type=#{commentType}
+          </if>
+          <if test="parentId !=null">
+              and  parent_id=#{parentId}
+          </if>
+      </where>
+    </select>
+    <update id="updatePostCommentState" parameterType="com.sss.sssforum.wxclient.post.entity.PostComment">
+        update  post_comment set is_deleted=#{postComment.isDeleted}, create_time=now()
+        where comment_type=#{postComment.commentType} and id=#{postComment.id}
+
+    </update>
+
+    <select id="selectIsDeletedById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM post_comment pc
+        WHERE pc.id=#{id}
+    </select>
+</mapper>
