@@ -1,0 +1,168 @@
+<view style="padding-bottom:100rpx">
+	<van-skeleton title avatar row="3" loading="{{skeloading}}">
+		<view value="details">
+
+			<!-- 发布人信息 -->
+			<view class="message_box">
+				<view wx:if="{{details.wxUser !=null}}">
+					<van-row>
+						<van-col span="3" >
+							<van-image round width="3rem" height="3rem" src="{{details.wxUser.avatarUrl}}">
+							</van-image>
+						</van-col>
+						<van-col span="21">
+						<view class="label-style" style="line-height:3rem" wx:if="{{details.wxUser !=null}}">{{details.wxUser.wxNickname}} | {{details.createTime}}</view>
+						</van-col>
+					</van-row>
+				</view>
+				<view>
+					<van-row style="margin-top: 1px" align>
+						<van-col custom-class="van-col-style" span="6" offset="1">
+							<van-icon size="20px" name="eye-o" />
+							<text class="text-style">{{details.viewCount}}</text>
+						</van-col>
+						<van-col custom-class="van-col-style" span="6" offset="1">
+							<van-icon size="20px" name="chat-o" />
+							<text class="text-style">{{details.commentCount > 0?details.commentCount:'评论'}}</text>
+						</van-col>
+						<van-col custom-class="van-col-style" span="6" offset="1" >
+							<van-icon wx:if="{{!details.isLike}}" size="20px" bindtap="like" name="good-job-o" />
+							<van-icon wx:if="{{details.isLike}}" size="20px"  bindtap="like" name="good-job" />
+							<text class="text-style" bindtap="like" >{{details.likeCount > 0?details.likeCount:'赞'}}</text>
+						</van-col>
+					</van-row>
+				</view>
+				<!-- 帖子标题  align-items:center;justify-content:center;-->
+				<view class="right">
+					<view class="title">
+						<text style="padding-left:15px; font-size: 16px;font-weight: bold;display:flex;">{{details.title}}</text>
+					</view>
+				</view>
+			</view>
+		</view>
+		<!--帖子内容-->
+		<view class="content" style="margin-top: 10px;">
+			<rich-text nodes="{{details.postCotent}}"></rich-text>
+		</view>
+	</van-skeleton>
+	<!--对帖子发布评论 start-->
+	<view hidden="{{details ==null}}" class="fobotom">
+		<van-field input-class="van-field" value="{{commentContentParent}}" bind:change="getChangeValue" autosize type="text" placeholder="请输入评论内容" border="true" clearable="true" use-button-slot>
+			<van-button slot="button" size="small" type="primary" bind:click="pushComment" data-pushUser="{{details}}">发布</van-button>
+		</van-field>
+	</view>
+	<!--对帖子发布评论 start-->
+
+
+	<!--展现帖子的评论列表 start-->
+	<view wx:if="{{details.wxUser !=null}}">
+	<view id="commentList-start" wx:if="{{postCommentList.length > 0}}" wx:for="{{ postCommentList}}" wx:key="index">
+		<view class="footer">
+			<van-image round width="3rem" height="3rem" src="{{item.wxUser.avatarUrl}}" />
+			<view style="width: 100%;">
+				<view>
+					<van-cell title="{{item.wxUser.wxNickname}} " size="large" label="{{index+1}}楼-{{item.createTime}}" value-class="icon-style">
+						<view wx:if="{{!item.isLike}}" class="dianzan" slot="right-icon">
+							<van-icon name="good-job-o" size="20px" class="custom-icon" data-index="{{index}}" bindtap="likeComment" />
+							{{item.commentLikeCount > 0?item.commentLikeCount:''}}
+						</view>
+						<view wx:if="{{item.isLike}}" class="dianzan" slot="right-icon">
+							<van-icon name="good-job" size="20px" class="custom-icon" data-index="{{index}}"  bindtap="likeComment" />
+							{{item.commentLikeCount}}
+						</view>
+					</van-cell>
+
+				</view>
+			</view>
+
+		</view>
+		<!-- 是否弹出回复他人的弹出框-->
+		<view>
+			<text class="comment-style"  bindtap="popupComment" data-index="{{index}}">{{item.commentContent}}</text>
+		</view>
+
+		<!-- 是否显示更多回复文字标签 "-->
+		<view>
+			<van-button wx:if="{{item.manyCommentCount > 0}}" round size="mini" style="padding:0 10px;margin: 0px 10px 10px;" type="default" data-index="{{index}}" bind:click="showChildManyComment">
+				{{item.manyCommentCount}}条回复
+			</van-button>
+		</view>
+	</view>
+	<!--占用空白位置-->
+        <view style="height: 90rpx;width: 100%"></view>
+	</view>
+	<!--展现帖子的评论列表 end-->
+
+	<!--是否弹出帖子底部评论的回复文本框-->
+	<view>
+		<van-popup show="{{showPopup}}" position="bottom" style=" height: 20% " overlay-style="{backgroundColor:'rgba(0,0,0,0.1)'}" bind:close="onClose" close-on-click-overlay="true">
+			<!-- <view> -->
+			<van-field autosize type="textarea" bind:change="getChangeValue" value="{{popupCommentContent}}" placeholder="{{popupPlaceholder}}" placeholder-style="backgroundColor:'rgba(0,0,0,0.1)'" border clearable="{{true}}" use-button-slot>
+				<van-button slot="button" size="small" type="info" bind:click="replyBottomComment">回复</van-button>
+			</van-field>
+			<!-- </view> -->
+		</van-popup>
+	</view>
+
+
+
+	<!-- 更多回复start -->
+	<!--查看更多回复弹出框-->
+	<view>
+		<van-popup show="{{showChildContent}}" position="bottom" bind:close="onClose" close-on-click-overlay="true" overlay-style="{backgroundColor:'rgba(0,0,0,0.1)'}">
+
+			<!--更多回复页面的回复数据列表 start-->
+			<view style="height: 100%;">
+				<!--查看更多回复页面顶部的关闭图标-->
+				<view>
+					<!-- <van-sticky> -->
+						<van-icon class="close" name="cross" size="15px" bind:click="onClose" />
+					<!-- </van-sticky> -->
+				</view>
+				<view wx:if="{{childCommentList.length > 0}}" wx:for="{{childCommentList}}" wx:for-item="childItem" wx:for-index="childIdx" wx:key="childIdx">
+					<view class="footer">
+						<van-image round width="3rem" height="3rem" src="{{childItem.wxUser.avatarUrl}}" />
+						<view style="width: 100%;">
+							<view>
+								<van-cell title="{{childItem.wxUser.wxNickname}} " size="large" label="{{childItem.createTime}}" value-class="icon-style">
+									<view wx:if="{{!childItem.isLike}}" class="dianzan" slot="right-icon">
+										<van-icon slot="right-icon" name="good-job-o" size="20px" class="custom-icon" data-index="{{childIdx}}" bindtap="likeChildComment"/>
+										{{childItem.commentLikeCount > 0?childItem.commentLikeCount:''}}
+									</view>
+									<view wx:if="{{childItem.isLike}}" class="dianzan" slot="right-icon">
+										<van-icon slot="right-icon" name="good-job" size="20px" class="custom-icon" data-index="{{childIdx}}" bindtap="likeChildComment" />
+										{{childItem.commentLikeCount}}
+									</view>
+								</van-cell>
+							</view>
+						</view>
+					</view>
+					<view>
+						<text class="post-comment-style" bindtap="childPopupComment" data-index="{{childIdx}}">{{childItem.commentContent}}</text>
+					</view>
+				</view>
+			</view>
+			<!--更多回复页面的回复数据列表 end-->
+
+			<!--更多回复页面底部的回复文本框-->
+			<van-field style="{position:'fixed',bottom:'0',left:'0',width:'100%'}" value="{{popupCommentContent}}" autosize type="text" bind:change="getChangeValue" placeholder="{{manyCommentBottomPlaceholder}}" border clearable="true" use-button-slo>
+				<!--更多回复页面下的底部评论框-->
+				<van-button slot="button" size="small" type="warning" bind:click="replyBottomCommentInManyComment">
+					评论
+				</van-button>
+			</van-field>
+
+			<!--是否弹出更多回复页面的子回复评论文本框-->
+			<view style="height: 100%;">
+				<van-popup show="{{showChildPopup}}" round position="bottom" custom-style="height: 15%; z-index: 105" overlay-style="{backgroundColor:'rgba(0,0,0,0.1)'}" closeable bind:close="onClose2" close-on-click-overlay="true">
+					<van-field custom-style="margin-top: 25px" bind:change="getChangeValue" value="{{childPopupCommentContent}}" autosize type="textarea" placeholder="{{popupPlaceholder}}" border="{{ false }}" clearable="true" use-button-slot>
+						<van-button size="small" color="#01A9DB" slot="button" bind:click="pushChildPopunComment">
+							回复
+						</van-button>
+					</van-field>
+				</van-popup>
+			</view>
+		</van-popup>
+	</view>
+	<!-- 更多回复end -->
+</view>

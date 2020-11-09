@@ -1,0 +1,23 @@
+{
+  "navigationBarTitleText": "类型列表",
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-tabbar": "@vant/weapp/tabbar/index",
+  "van-tabbar-item": "@vant/weapp/tabbar-item/index",
+  "van-search": "@vant/weapp/search/index",
+  "van-sticky": "@vant/weapp/sticky/index",
+  "van-tab": "@vant/weapp/tab/index",
+  "van-tabs": "@vant/weapp/tabs/index",
+  "van-icon": "@vant/weapp/icon/index",
+  "van-cell": "@vant/weapp/cell/index",
+  "van-cell-group": "@vant/weapp/cell-group/index",
+  "van-row": "@vant/weapp/row/index",
+  "van-col": "@vant/weapp/col/index",
+  "van-image": "@vant/weapp/image/index",
+  "van-nav-bar": "@vant/weapp/nav-bar/index",
+  "van-field": "@vant/weapp/field/index",
+  "van-popup": "@vant/weapp/popup/index"
+  },
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
+}

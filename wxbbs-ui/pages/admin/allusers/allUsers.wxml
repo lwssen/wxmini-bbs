@@ -1,0 +1,70 @@
+<view>
+	<van-sticky>
+		<van-search value="{{searchValue}}" shape="round" placeholder="请输入用户名称搜索" bind:search="onSearch" bind:clear="onClear" />
+		<van-row  custom-class="globalCenter row">
+			<van-col span="8">用户总数 {{userTotalCount}}</van-col>
+			<van-col span="8">帖子总数 {{postTotalCount}}</van-col>
+		</van-row>
+	</van-sticky>
+		<view wx:if="{{allUserList.length == 0}}" style="margin-top: 300rpx">
+		        <image class="head-img" style="width: 64px; height: 64px;" mode="scaleToFill" src="/myicons/emptyData.png"></image>
+						<text class="head-img" style="color: #cdcdcd;">没有任何数据哦</text>
+	</view>
+	<view wx:if="{{allUserList.length > 0}}" wx:for="{{allUserList}}" wx:key="index" title="{{item.title}}" style="margin: 15px 0;border-bottom: 1px #ccc solid;">
+		<view>
+			<van-row >
+				<van-col span="3" offset="1">
+					<van-image round width="2rem" height="2rem" src="{{item.avatarUrl}}">
+					</van-image>
+				</van-col>
+				<!--<label class="label-style">{{item.wxNickname}} | {{item.createTime}}</label>-->
+			</van-row>
+			<view class="test-style">
+				<text class="label-style">用户名称: {{item.wxNickname}} </text>
+			</view>
+			<view>
+				<text class="label-style" style="margin-left: 10px">注册时间: {{item.createTime}}</text>
+			</view>
+		</view>
+
+		<view>
+			<van-row custom-class="globalCenter  ">
+				<van-col span="8" offset="1" class="bottom-style">帖子总数 {{item.postTotalCount}}</van-col>
+				<van-col span="8" offset="1" class="bottom-style">点赞总数 {{item.likeTotalCount}}</van-col>
+			</van-row>
+			<van-row custom-class="globalCenter ">
+					<van-col span="8">
+						<picker bindchange="setAdmin" data-index="{{index}}" value="{{0}}" range="{{setAdminOption}}" range-key="text">
+							<view class="picker">
+								<van-button round type="info" size="small">
+									{{item.roleId==1?'管理员':'普通用户'}}
+								</van-button>
+							</view>
+						</picker>
+
+					</van-col>
+					<van-col span="8">
+						<picker bindchange="changeUserState" value="{{0}}" data-index="{{index}}" range="{{userStatusOption}}" range-key="text">
+							<view class="picker">
+								<van-button round type="danger" size="small">
+									{{item.state==1? '禁用':'正常'}}
+								</van-button>
+							</view>
+						</picker>
+					</van-col>
+						<van-col span="8">
+						<picker bindchange="setAdd" data-index="{{index}}" value="{{0}}" range="{{setDel}}" range-key="text">
+							<view class="picker">
+								<van-button round type="primary" size="small">
+									{{item.isPush?'允许':'禁止'}}
+								</van-button>
+							</view>
+						</picker>
+					</van-col>
+				</van-row>
+		</view>
+	</view>
+
+
+
+</view>

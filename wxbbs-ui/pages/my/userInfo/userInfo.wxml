@@ -1,0 +1,37 @@
+<view>
+  <view  class="head-img-box">
+            <van-image
+                    round
+                    width="5rem"
+                    height="5rem"
+                    class="head-img"
+                    src="{{userInfo.avatarUrl}}">
+            </van-image>
+        </view>
+            <van-field
+                    value="{{userInfo.wxNickname}}"
+                    name="username"
+                    label="用户名"
+                    placeholder="用户名"
+                    maxLength="15"
+                    bind:change="changeName"
+                    rules="[{ required: true, message: '请填写用户名' }]"
+            />
+            <van-field
+                     value="{{userInfo.address}}"
+                    name="address"
+                    label="地址"
+                    maxLength="30"
+                    autosize
+                    bind:change="changeAddress"
+                    placeholder="地址"
+            />
+            <view style="margin: 16px;">
+                <van-button round block type="info" bind:click="submit">
+                    提交
+                </van-button>
+            </view>
+
+
+
+</view>

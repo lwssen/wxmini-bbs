@@ -1,0 +1,44 @@
+<!--components/tabbar/tabbar.wxml-->
+<!--底部菜单栏-->
+<van-tabbar active="{{tabActive}}" active-color="#07c160" inactive-color="#000" bind:change="onChange">
+	<van-tabbar-item name="home">
+		<!-- 未选中图标 -->
+		<image slot="icon" src="{{ icon.home }}" mode="aspectFit" style="width: 50px; height: 18px;" />
+		<!-- 选中后图标 -->
+		<image slot="icon-active" src="{{ icon.homeActive }}" mode="aspectFit" style="width: 50px; height: 18px;" />
+		首页
+	</van-tabbar-item>
+	<!-- 发布 -->
+	<van-tabbar-item name="push">
+		<image slot="icon" src="{{ icon.push }}" mode="aspectFit" style="width: 30px; height: 18px;" />
+		<image slot="icon-active" src="{{ icon.pushActive }}" mode="aspectFit" style="width: 30px; height: 18px;" />
+		发布
+	</van-tabbar-item>
+
+	<!-- 消息 -->
+	<van-tabbar-item info="{{messageCount >0?messageCount:'' }}" name="message">
+		<image slot="icon" src="{{ icon.message }}" mode="aspectFit" style="width: 30px; height: 18px;" />
+		<image slot="icon-active" src="{{ icon.messageActive }}" mode="aspectFit" style="width: 30px; height: 18px;" />
+		消息
+	</van-tabbar-item>
+	
+		<!-- 打赏 -->
+	<van-tabbar-item name="reward">
+		<image slot="icon" src="{{ icon.reward }}" mode="aspectFit" style="width: 60px; height: 18px;" />
+		<image slot="icon-active" src="{{ icon.rewardActive }}" mode="aspectFit" style="width: 60px; height: 18px;" />
+		打赏
+	</van-tabbar-item>
+
+	<!-- 我的 -->
+	<van-tabbar-item name="my">
+		<image slot="icon" src="{{ icon.my }}" mode="aspectFit" style="width: 30px; height: 18px;" />
+		<image slot="icon-active" src="{{ icon.myActive }}" mode="aspectFit" style="width: 30px; height: 18px;" />
+		我的
+	</van-tabbar-item>
+
+	<!-- <van-tabbar-item name="home"  icon="wap-home-o">首页</van-tabbar-item>
+        <van-tabbar-item name="push"  icon="orders-o">发布</van-tabbar-item>
+        <van-tabbar-item name="reward"  icon="gold-coin-o">打赏</van-tabbar-item>
+        <van-tabbar-item name="message"  icon="chat-o"  info="5" bind:click="clearMessage">消息</van-tabbar-item>
+        <van-tabbar-item name="my"  icon="user-circle-o" >我的</van-tabbar-item> -->
+</van-tabbar>

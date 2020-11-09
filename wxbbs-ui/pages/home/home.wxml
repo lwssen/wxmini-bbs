@@ -1,0 +1,61 @@
+<!--pages/home/home.wxml-->
+<view>
+	<van-sticky>
+		<van-search value="{{searchValue}}" shape="round" background="#f5f5dc" placeholder="请输入帖子标题搜索" bind:search="onSearch" bind:clear="onClear" />
+		<!--顶部菜单栏 type="card"  style="margin: -100rpx 0"-->
+		<van-tabs active="{{typeId}}" bind:click="onClick">
+			<van-tab wx:for="{{navBarList}}" wx:key="index" title="{{item.typeName}}" name="{{item.typeId}}">
+			</van-tab>
+		</van-tabs>
+	</van-sticky>
+
+	<van-dropdown-menu>
+		<van-dropdown-item   value="{{ optionValue }}" options="{{ option }}" bind:change="optionChange" />
+	</van-dropdown-menu>
+
+	<view >
+		<view wx:if="{{postList.length == 0}}" >
+			<image class="head-img" style="width: 128rpx; height: 128rpx; margin-top: 200rpx" mode="scaleToFill" src="/myicons/emptyData.png"></image>
+			<text class="head-img" style="color: #cdcdcd;">没有任何数据哦</text>
+		</view>
+		<view wx:if="{{postList.length > 0}}" wx:for="{{postList}}" wx:key="index" style="margin-bottom: 15px 0;border-bottom: 1px #ccc solid;">
+			<view wx:if="{{item.wxUser !=null}}">
+				<van-row type="flex">
+					<van-col text="3" offset="1">
+						<van-image round width="2rem" height="2rem" src="{{item.wxUser.avatarUrl}}">
+						</van-image>
+					</van-col>
+					<text class="label-style" >{{item.wxUser.wxNickname}} | {{item.createTime}}</text>
+				</van-row>
+			</view>
+
+			<view>
+				<navigator url="/pages/postinfo/postInfo?postId={{item.id}}">
+					<van-cell title="{{item.title}}" center title-class="title-style2" />
+				</navigator>
+				<!-- <van-cell title="{{item.title}}" center title-class="title-style2"  bind:click="postInfo" data-postId="{{item.id}}"/> -->
+			</view>
+
+			<view>
+				<van-row type="flex" class="bottom-style" align>
+					<van-col span="5" offset="1">
+						<van-icon name="eye-o" size="20px" />
+						<text>{{item.viewCount > 0?item.viewCount:'查看'}}</text>
+					</van-col>
+					<van-col span="5" offset="1">
+						<van-icon data-index="{{index}}" bindtap="postInfo" name="chat-o" size="20px" />
+						<text data-index="{{index}}" bindtap="postInfo" >{{item.commentCount > 0?item.commentCount:'评论'}}</text>
+					</van-col>
+					<van-col span="5" offset="1">
+						<van-icon wx:if="{{!item.isLike}}" size="20px" name="good-job-o" data-index="{{index}}" bindtap="like" />
+						<van-icon wx:if="{{item.isLike}}" size="20px" name="good-job" data-index="{{index}}" bindtap="like" />
+						<text data-index="{{index}}" bindtap="like">{{item.likeCount>0?item.likeCount:'赞'}}</text>
+					</van-col>
+				</van-row>
+			</view>
+		</view>
+		<!--占用空白位置-->
+        <view style="height: 110rpx;width: 100%"></view>
+	</view>
+	<tabbar tabActive="{{active}}" messageCount="{{messageCount}}" binditemChange="handlerChange"> </tabbar>
+</view>

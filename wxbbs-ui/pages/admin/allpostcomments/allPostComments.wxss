@@ -1,0 +1,10 @@
+.footer {
+  display: flex;
+}
+
+.close {
+  margin-left: 350rpx;
+  border: 4rpx solid #000;
+  border-radius: 50%;
+  font-size: 40rpx;
+}

@@ -1,0 +1,86 @@
+<view>
+	<van-sticky>
+		<van-search value="{{searchValue}}" shape="round" background="#f5f5dc" placeholder="请输入帖子标题搜索" bind:search="onSearch" bind:clear="onClear" />
+		<!--顶部菜单栏 type="card"-->
+		<van-tabs active="{{typeId}}"  bind:click="onClick">
+			<van-tab wx:for="{{navBarList}}" wx:key="index" title="{{item.typeName}}" name="{{item.typeId}}">
+			</van-tab>
+		</van-tabs>
+	</van-sticky>
+
+	
+				<van-dropdown-menu z-index="99" >
+					<van-dropdown-item   value="{{ optionValue }}" options="{{ option }}" bind:change="optionChange" />
+				</van-dropdown-menu>
+	
+
+	<view >
+			<view wx:if="{{allPostList.length == 0}}" style="margin-top: 300rpx">
+		        <image class="head-img" style="width: 64px; height: 64px;" mode="scaleToFill" src="/myicons/emptyData.png"></image>
+						<text class="head-img" style="color: #cdcdcd;">没有任何数据哦</text>
+	</view>
+		<view wx:if="{{allPostList.length > 0}}" wx:for="{{allPostList}}" wx:for-index='idx' wx:key="id" title="{{item.title}}" 
+		style="margin-bottom: 15px 0;border-bottom: 1px #ccc solid;">
+			<view wx:if="item.wxUser !=null">
+				<van-row type="flex">
+					<van-col span="3" offset="1">
+						<van-image round width="2rem" height="2rem" src="{{item.wxUser.avatarUrl}}">
+						</van-image>
+					</van-col>
+					<text class="label-style">{{item.wxUser.wxNickname}} | {{item.createTime}}</text>
+				</van-row>
+			</view>
+
+			<view >
+					<navigator url="/pages/postinfo/postInfo?postId={{item.id}}">
+							<van-cell title="{{item.title}}" center title-class="title-style" />
+					</navigator>
+			</view>
+
+			<view>
+				<van-row type="flex" class="bottom-style" align>
+					<van-col span="5" offset="1">
+						<van-icon name="eye-o" size="20px" /> <text style="padding-left: 5px">{{item.viewCount}}</text></van-col>
+					<van-col span="5" offset="1" bind:clilck="btn(item)">
+						<van-icon name="chat-o" size="20px" />
+						<text style="padding-left: 5px" >{{item.commentCount}}</text></van-col>
+					<van-col span="5" offset="1">
+						<van-icon name="good-job-o" size="20px" />
+						<text style="padding-left: 5px">{{item.likeCount}}</text>
+					</van-col>
+				</van-row>
+
+				<van-row>
+					<van-col span="8">
+						<van-button round type="primary" size="small" data-postid="{{item.id}}" bind:click="toJump">
+							查看所有评论
+						</van-button>
+					</van-col>
+					<van-col span="8">
+						<picker bindchange="bindPickerChange" data-index="{{idx}}" value="{{0}}" range="{{navBarList}}" range-key="typeName">
+							<view class="picker">
+								<van-button round type="info" size="small">
+									{{item.typeName}}
+								</van-button>
+							</view>
+						</picker>
+
+					</van-col>
+					<van-col span="8">
+						<picker bindchange="bindPickerChange2" value="{{0}}" data-index="{{idx}}" range="{{option2}}" range-key="text">
+							<view class="picker">
+								<van-button round type="danger" size="small">
+									{{item.isDeleted? '删除':'正常'}}
+								</van-button>
+							</view>
+						</picker>
+					</van-col>
+				</van-row>
+			</view>
+		</view>
+	</view>
+
+
+
+
+</view>

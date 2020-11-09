@@ -1,0 +1,14 @@
+{
+  "name": "bbs-weapp",
+  "version": "1.0.0",
+  "description": "my_bbs_project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "lws",
+  "license": "ISC",
+  "dependencies": {
+    "@vant/weapp": "^1.5.0"
+  }
+}

@@ -1,0 +1,42 @@
+	<!-- 更多回复start -->
+	<!--查看更多回复弹出框-->
+	<view>
+		<van-popup show="{{showChildContent}}" position="bottom" bind:close="onClose" 
+    close-on-click-overlay="true" custom-style="height: 20%;"
+    overlay-style="{backgroundColor:'rgba(0,0,0,0.1)'}">
+
+			<!--更多回复页面的回复数据列表 start-->
+			<view style="height: 100%;">
+				<!--查看更多回复页面顶部的关闭图标-->
+				<view>
+					<van-sticky>
+						<van-icon class="close" name="cross" size="15px" bind:click="onClose" />
+					</van-sticky>
+				</view>
+				<view wx:if="{{childCommentList.length > 0}}" wx:for="{{childCommentList}}" wx:for-item="childItem" wx:for-index="childIdx" wx:key="childIdx">
+					<view class="footer">
+						<van-image round width="3rem" height="3rem" src="{{childItem.wxUser.avatarUrl}}" />
+						<view style="width: 100%;">
+							<view>
+								<van-cell title="{{childItem.wxUser.wxNickname}} " size="large" label="{{childItem.createTime}}" value-class="icon-style">
+									<view wx:if="{{!childItem.isLike}}" class="dianzan" slot="right-icon">
+										<van-icon slot="right-icon" name="good-job-o" size="20px" class="custom-icon" data-index="{{childIdx}}" bindtap="likeChildComment"/>
+										{{childItem.commentLikeCount > 0?childItem.commentLikeCount:''}}
+									</view>
+									<view wx:if="{{childItem.isLike}}" class="dianzan" slot="right-icon">
+										<van-icon slot="right-icon" name="good-job" size="20px" class="custom-icon" data-index="{{childIdx}}" bindtap="likeChildComment" />
+										{{childItem.commentLikeCount}}
+									</view>
+								</van-cell>
+							</view>
+						</view>
+					</view>
+					<view>
+						<text class="post-comment-style" bindtap="childPopupComment" data-index="{{childIdx}}">{{childItem.commentContent}}</text>
+					</view>
+				</view>
+			</view>
+			<!--更多回复页面的回复数据列表 end-->
+		</van-popup>
+	</view>
+	<!-- 更多回复end -->

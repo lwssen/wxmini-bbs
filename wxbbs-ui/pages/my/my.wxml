@@ -1,0 +1,54 @@
+<view>
+	<view>
+		<navbar />
+		<view>
+			<view wx:if="{{userInfo !=null}}">
+				<view class="head-img-box">
+					<van-image round width="5rem" height="5rem" class="head-img" src="{{userInfo.avatarUrl}}">
+					</van-image>
+				</view>
+				<view>
+					<text class="label-style2">{{userInfo.wxNickname}}</text>
+				</view>
+                <view wx:if="{{isPush}}">
+			        <!-- 居中 -->
+                    <van-row custom-class="row" gutter="20">
+                        <van-col span="8">帖子 {{userInfo.postTotalCount}}</van-col>
+                        <van-col span="8">点赞 {{userInfo.likeTotalCount}}</van-col>
+                    </van-row>
+                </view>
+			</view>
+            <view wx:else>
+                <view class="head-img-box">
+                    <van-image round width="5rem" height="5rem" class="head-img" src="{{userInfo.avatarUrl}}">
+                    </van-image>
+                </view>
+                <view>
+                    <van-button custom-class="label-style2" type="primary" size="large" open-type="getUserInfo" bind:getuserinfo="toLogin">
+                    <!-- <van-button custom-class="label-style2" type="primary" size="large" bind:click="toLogin"> -->
+                        点击登录
+                    </van-button>
+                </view>
+		    </view>
+
+		</view>
+
+	
+		<view>
+			<van-cell is-link title="编辑我的信息" icon="user-o" bind:click="userInfo" />
+			<van-cell wx:if="{{isPush}}" is-link title="我的帖子" icon="records" bind:click="myPosts" />
+			<van-cell wx:if="{{isAdmin}}" is-link icon="flag-o" title="管理帖子" bind:click="allPosts" />
+			<van-cell wx:if="{{isAdmin}}" is-link icon="flower-o" title="管理用户" bind:click="allUsers" />
+			<van-cell wx:if="{{isAdmin}}" is-link icon="diamond-o" title="管理类型" bind:click="allPostType" />
+			<van-cell wx:if="{{isAdmin}}" is-link icon="fire-o" title="管理敏感词" bind:click="allSenSitiveWord" />
+			<van-cell wx:if="{{isAdmin}}" is-link icon="fire-o" title="发布笔记" bind:click="isadd" />
+			<van-cell wx:if="{{isPush}}" is-link icon="fire-o" title="发布笔记" bind:click="isadd" />
+		</view>
+
+		<tabbar tabActive="{{active}}" messageCount="{{messageCount}}" />
+	</view>
+
+
+
+
+</view>

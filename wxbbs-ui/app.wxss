@@ -1,0 +1,56 @@
+/**app.wxss**/
+@import 'weui.wxss';
+/* @import 'editor.wxss'; */
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 200rpx 0;
+  box-sizing: border-box;
+} 
+
+
+.head-img{
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  justify-content: center;
+}
+
+
+.title-style{
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-top: -16rpx;
+}
+
+.bottom-style{
+  margin-top: -4rpx;
+}
+.van-col>span{
+  margin-left: 10rpx;
+}
+.text-center{
+  display: flex;
+  justify-content: center;
+}
+
+.post-comment-style {
+  margin-top: 2rpx;
+  color: #070707;
+  padding-left: 30rpx;
+}
+
+.globalBtn{
+  padding-left: 50rpx;
+  padding-top: 26rpx;
+}
+
+.globalCenter{
+   /* display: flex;*/
+  justify-content: center; 
+  padding-left: 100rpx;
+  padding-top: 5rpx;
+}

@@ -1,0 +1,40 @@
+/* pages/message/message.wxss */
+.span-style {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 1px 5px 1px 10px;
+  overflow: hidden;
+  color: #323233;
+  font-size: 14px;
+  line-height: 24px;
+  background-color: #fff;
+  margin-top: -5px;
+  margin-bottom: 1px;
+
+}
+
+.label-cell{
+  margin-top: -3px;
+  color: #969799;
+  font-size: 12px;
+  line-height: 18px;
+  padding: 1px 1px 1px 10px;
+}
+.label-style{
+  margin-top: 4px;
+  font-size: 15px;
+}
+
+.fobotom {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+
+  

@@ -1,0 +1,53 @@
+
+	<van-sticky>
+<van-nav-bar 
+   custom-style="padding-top: 0px;" safe-area-inset-top="{{false}}"
+   title="标题" left-text="返回" right-text="发布" left-arrow 
+   bind:click-left="onClickLeft" 
+   bind:click-right="onClickRight" />
+   </van-sticky>
+ <view  >
+		<van-field 
+    required  show-word-limit autosize
+    input-class="title-style"
+    type="textarea"
+    maxlength="50"
+    auto-focus
+    clearable
+    show-confirm-bar="{{false}}"
+    value="{{title}}" placeholder="请输入标题" border="{{ true }}" bind:change="onChange" />
+	</view>
+
+<scroll-view scroll-x ="{{true}}">
+<view  style="height:{{editorHeight}}px;">
+  <editor id="editor" class="ql-container" placeholder="{{placeholder}}" 
+  bindstatuschange="onStatusChange" bindready="onEditorReady"
+  >
+  </editor>
+</view>
+</scroll-view>
+
+<view class="toolbar" catchtouchend="format"  style="bottom: {{isIOS ? keyboardHeight : 0}}px">
+<!-- 插入图片  hidden="{{keyboardHeight > 0 ? false : true}}" style="bottom: {{isIOS ? keyboardHeight : 0}}px" -->
+  <i class="iconfont icon-charutupian" catchtouchend="insertImage"></i>
+   <!-- 居中 -->
+  <i class="iconfont icon-juzhongduiqi {{formats.align === 'center' ? 'ql-active' : ''}}" data-name="align" data-value="center"></i>
+   <!-- 分割线 -->
+  <i class="iconfont icon-fengexian" bindtap="insertDivider"></i>
+    <!-- 标题 3 -->
+    <i class="iconfont icon-format-header-3 {{formats.header === 3 ? 'ql-active' : ''}}" data-name="header" data-value="{{3}}"></i>
+    <!-- 加粗 -->
+    <i class="iconfont icon-zitijiacu {{formats.bold ? 'ql-active' : ''}}" data-name="bold"></i>
+     <!-- 字体加下划线 -->
+    <i class="iconfont icon-zitixiahuaxian {{formats.underline ? 'ql-active' : ''}}" data-name="underline"></i>
+    <!-- 有序 -->
+    <i class="iconfont icon-youxupailie {{formats.list === 'ordered' ? 'ql-active' : ''}}" data-name="list" data-value="ordered"></i>
+    <!-- 无序 -->
+    <i class="iconfont icon-wuxupailie {{formats.list === 'bullet' ? 'ql-active' : ''}}" data-name="list" data-value="bullet"></i>
+     <!-- 删除 -->
+    <i class="iconfont icon-shanchu" bindtap="clear"></i>
+     <!-- 撤销 -->
+    <i class="iconfont icon-undo" bindtap="undo"></i>
+    <!-- 取消撤销 -->
+    <i class="iconfont icon-redo" bindtap="redo"></i>
+</view>
