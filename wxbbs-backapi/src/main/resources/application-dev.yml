@@ -102,10 +102,10 @@ file:
     linux-path: /images/
 
 oss:
-#  AccessKeyID: LTAI4GDejFfS2U2sNSy7erCS
-#  AccessKeySecret: 4M55GziYvf8m0FsqvR5pomePe5BmIk
-  AccessKeyID: LTAI4GFk6BLDeszo684PH2B9
-  AccessKeySecret: mC7TcHyQEZ1CvEf6qOQ9Ikuz0RRu7i
+#  AccessKeyID: 11111111
+#  AccessKeySecret: 555555
+  AccessKeyID: 14565662225
+  AccessKeySecret: 888888888
   endpoint: oss-accelerate.aliyuncs.com
   bucketName: photos-2020-09-12
   requestUrl: sss.sssen.top
